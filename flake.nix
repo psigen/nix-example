@@ -14,21 +14,38 @@ rec {
     in {
       devShells.x86_64-linux.default = pkgs.mkShell {
         name = "The Grandest of Build Environments";
-        buildInputs = [
-          pkgs.ocaml
-          pkgs.godot_4
-          pkgs.terra
-          # pkgs.python311
-          # pkgs.python311Packages.tox
-          # pkgs.python311Packages.flake8
-          # pkgs.python311Packages.requests
-          # pkgs.python311Packages.ipython
+        buildInputs = with pkgs; [
+          godot_4
+          nodejs_18
+          terra
           fooScript
-        ];
+        ]
+        ++ ( with ocamlPackages;
+        [
+          dune_3
+          findlib
+          ocaml
+          ocaml-lsp
+          odoc
+          utop
+        ]);
         shellHook = ''
           echo "Welcome to Grand-Town in $name"
           export FOO="BAR"
         '';
       };
+
+      defaultPackage.x86_64-linux =
+        # Notice the reference to nixpkgs here.
+        with import nixpkgs { system = "x86_64-linux"; };
+        stdenv.mkDerivation {
+          name = "hello";
+          src = self;
+          buildPhase = ''
+            ls -la
+            gcc -o hello ./hello.c
+          '';
+          installPhase = "mkdir -p $out/bin; install -t $out/bin hello";
+        };
     };
 }
