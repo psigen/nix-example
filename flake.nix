@@ -15,7 +15,7 @@ rec {
       devShells.x86_64-linux.default = pkgs.mkShell {
         name = "The Grandest of Build Environments";
         buildInputs = with pkgs; [
-          godot_4
+          # godot_4
           nodejs_18
           terra
           fooScript
@@ -38,14 +38,15 @@ rec {
       defaultPackage.x86_64-linux =
         # Notice the reference to nixpkgs here.
         with import nixpkgs { system = "x86_64-linux"; };
-        stdenv.mkDerivation {
+        clang12Stdenv.mkDerivation {
           name = "hello";
           src = self;
           buildPhase = ''
             ls -la
-            gcc -o hello ./hello.c
+            clang -o hello ./hello.c
           '';
           installPhase = "mkdir -p $out/bin; install -t $out/bin hello";
         };
     };
 }
+# Good night!

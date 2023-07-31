@@ -1,5 +1,7 @@
 # nix-example
 
+This is just a simple personal example for testing out some nix flake configuration.
+
 ## Getting Started
 
 Install nix using:
