@@ -9,4 +9,7 @@ https://nix.dev/tutorials/install-nix
 
 ```bash
 $ nix develop
+
+$ nix build
+$ ./result/bin/hello
 ```
